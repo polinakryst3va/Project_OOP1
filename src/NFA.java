@@ -2,20 +2,8 @@ import java.util.Set;
 import java.util.Map;
 
 public class NFA extends Automaton {
-    public NFA(AutomatonBuilder builder) {
-        super(builder);
-    }
 
-
-    public static class NFABuilder extends AutomatonBuilder {
-
-        public NFABuilder(int id) {
-            super(id);
-        }
-
-        @Override
-        public NFA build() {
-            return new NFA(this);
-        }
+    public NFA(int id, Set<Integer> states, Set<Character> alphabet, Map<Integer, Map<Character, Set<Integer>>> transitions, int initialStates, Set<Integer> finalStates) {
+        super(id, states, alphabet, transitions, initialStates, finalStates);
     }
 }
