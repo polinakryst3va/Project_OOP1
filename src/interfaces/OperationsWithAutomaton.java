@@ -5,19 +5,19 @@ import java.util.Set;
 
 public interface OperationsWithAutomaton {
 
-    public void addInitialState(int state);
+    public void addInitialState(State state);
 
-    public void removeInitialState(int state);
+    public void removeInitialState(State state);
 
-    public boolean isInitialState(int state);
+    public boolean isInitialState(State state);
 
     public void clearInitialStates();
 
-    public void addFinalState(int state);
+    public void addFinalState(State state);
 
-    public void removeFinalState(int state);
+    public void removeFinalState(State state);
 
-    public boolean isFinalState(int state);
+    public boolean isFinalState(State state);
 
     public void clearFinalStates();
 

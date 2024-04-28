@@ -1,4 +1,9 @@
 package interfaces;
 
-public interface State {
+public class State {
+    private int id;
+
+    public State(int id) {
+        this.id = id;
+    }
 }

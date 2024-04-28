@@ -8,7 +8,11 @@ public class AutomatonList {
 
 
     private AutomatonList() {
+        this.automatonIds = new ArrayList<>();
+    }
 
+    public void addAutomatonId(int id) {
+        automatonIds.add(id);
     }
 
     public static AutomatonList getInstance(){
