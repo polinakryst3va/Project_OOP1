@@ -1,0 +1,13 @@
+id=1
+S=aA
+A=bC
+A=cD
+C=
+D=
+-
+id=2
+S=aB
+A=bC
+B=cA
+C=
+-
