@@ -1,8 +1,11 @@
-package cli;
+package cli.commands;
+
+import cli.DefaultCommand;
 
 import java.util.List;
 
 public class Exit extends DefaultCommand {
+
     public Exit() {
     }
 

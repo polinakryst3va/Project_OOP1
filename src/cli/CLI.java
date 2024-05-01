@@ -1,5 +1,7 @@
 package cli;
 
+import cli.commands.*;
+
 import java.util.*;
 
 public class CLI {
@@ -8,6 +10,9 @@ public class CLI {
     static {
         commands.put(Operations.EXIT, new Exit());
         commands.put(Operations.OPEN, new Open());
+        commands.put(Operations.HELP, new Help());
+        commands.put(Operations.RECOGNIZE, new Recognize());
+        commands.put(Operations.LIST, new ListCommand());
     }
 
     public static void start() {

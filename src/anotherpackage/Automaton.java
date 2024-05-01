@@ -31,20 +31,23 @@ public class Automaton {
         queue.add(start);
         visited.add(start);
 
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         while (!queue.isEmpty()) {
             Node node = queue.poll();
-            for (Edge edge : automaton.get(node)) {
-                if (!visited.contains(edge.getEndNode())) {
-                    visited.add(edge.getEndNode());
-                    queue.add(edge.getEndNode());
-                    result.concat(edge.getTransition());
+            List<Edge> edges = automaton.get(node);
+            if (edges != null) {
+                for (Edge edge : edges) {
+                    if (!visited.contains(edge.getEndNode())) {
+                        visited.add(edge.getEndNode());
+                        queue.add(edge.getEndNode());
+                        result.append(edge.getTransition());
+                    }
                 }
             }
         }
 
-        return result;
+        return result.toString();
     }
 
     public void addNode(Node node) {
