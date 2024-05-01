@@ -1,108 +1,126 @@
 package anotherpackage;
 
-import interfaces.OperationsWithAutomaton;
-import interfaces.State;
+import interfaces.Edge;
+import interfaces.Node;
 
-import java.io.*;
 import java.util.*;
 
-public class Automaton implements OperationsWithAutomaton, Serializable {
-    private static final long serialVersionUID = 1L;
+public class Automaton {
+    private Map<Node, List<Edge>> automaton = new HashMap<>();
+    private String alphabet;
+    private List<Node> endNodes = new ArrayList<>();
 
-    private int id;
-    private Set<State> states;  //състояния
-    private Set<Character> alphabet; //азбука
-    private Map<State, Map<Character, Set<State>>> transitions; //преходи между състояния
-    private Set<State> initialStates; //начални състояния
-    private Set<State> finalStates; //крайни състояния
-
-    public Automaton(int id, Set<State> states, Set<Character> alphabet, Map<State, Map<Character, Set<State>>> transitions, Set<State> initialStates, Set<State> finalStates) {
-        this.id = id;
-        this.states = states;
+    public Automaton(String alphabet) {
         this.alphabet = alphabet;
-        this.transitions = transitions;
-        this.initialStates = initialStates;
-        this.finalStates = finalStates;
     }
 
-    public int getId() {
-        return id;
+    public Map<Node, List<Edge>> getAutomaton() {
+        return automaton;
     }
 
-    public Set<State> getStates() {
-        return states;
-    }
-
-    public Set<Character> getAlphabet() {
+    public String getAlphabet() {
         return alphabet;
     }
 
-    public Map<State, Map<Character, Set<State>>> getTransitions() {
-        return transitions;
+    public String generateWord() {
+        Set<Node> visited = new LinkedHashSet<>();
+        Queue<Node> queue = new LinkedList<>();
+
+        Node start = new Node("S");
+
+        queue.add(start);
+        visited.add(start);
+
+        String result = "";
+
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+            for (Edge edge : automaton.get(node)) {
+                if (!visited.contains(edge.getEndNode())) {
+                    visited.add(edge.getEndNode());
+                    queue.add(edge.getEndNode());
+                    result.concat(edge.getTransition());
+                }
+            }
+        }
+
+        return result;
     }
 
-    public Set<State> getInitialStates() {
-        return initialStates;
+    public void addNode(Node node) {
+        automaton.put(node, new ArrayList<>());
     }
 
-    public Set<State> getFinalStates() {
-        return finalStates;
-    }
-
-    public void saveAutomaton(String filename) {
-        try (ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(filename))) {
-            stream.writeObject(this);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void addEndNode(Node node) {
+        if (!endNodes.contains(node)) {
+            endNodes.add(node);
         }
     }
 
-    public static Automaton loadAutomaton(String filename) {
-        try (ObjectInputStream stream = new ObjectInputStream(new FileInputStream(filename))) {
-            return (Automaton) stream.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
+    public boolean isEndNode(Node node) {
+        return endNodes.contains(node);
+    }
+
+    public void addEdge(Node from, Node to, String transition) {
+        if (Objects.isNull(transition) || transition.isBlank() || transition.isEmpty()) {
+            //invalidTransitionException
         }
+
+        if (!automaton.containsKey(from)) {
+            automaton.put(from, new ArrayList<>());
+        }
+
+        if (!automaton.containsKey(to)) {
+            automaton.put(to, new ArrayList<>());
+        }
+
+        if (!alphabet.contains(transition)) {
+            //invalidTransitionException
+        }
+
+        automaton.get(from).add(new Edge(transition, to));
     }
 
     @Override
-    public void addInitialState(State state) {
-        initialStates.add(state);
+    public String toString() {
+        StringBuilder automatonInfo = new StringBuilder();
+
+        int index = 1;
+        for (Node node : automaton.keySet()) {
+            for (Edge edge : automaton.get(node)) {
+                automatonInfo
+                        .append(index++)
+                        .append(". ")
+                        .append(node.getValue())
+                        .append(" -> ")
+                        .append(edge.getTransition())
+                        .append(edge.getEndNode().getValue())
+                        .append("\n");
+            }
+        }
+
+        for (Node node : endNodes) {
+            automatonInfo
+                    .append(index++)
+                    .append(". ")
+                    .append(node.getValue())
+                    .append(" -> ")
+                    .append("\n");
+        }
+
+        return automatonInfo.toString();
     }
 
     @Override
-    public void removeInitialState(State state) {
-        initialStates.remove(state);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Automaton)) return false;
+        Automaton automaton1 = (Automaton) o;
+        return Objects.equals(getAutomaton(), automaton1.getAutomaton()) && Objects.equals(getAlphabet(), automaton1.getAlphabet()) && Objects.equals(endNodes, automaton1.endNodes);
     }
 
     @Override
-    public boolean isInitialState(State state) {
-        return initialStates.contains(state);
-    }
-
-    @Override
-    public void clearInitialStates() {
-        initialStates.clear();
-    }
-
-    @Override
-    public void addFinalState(State state) {
-        finalStates.add(state);
-    }
-
-    @Override
-    public void removeFinalState(State state) {
-        finalStates.remove(state);
-    }
-
-    @Override
-    public boolean isFinalState(State state) {
-       return finalStates.contains(state);
-    }
-
-    @Override
-    public void clearFinalStates() {
-        finalStates.clear();
+    public int hashCode() {
+        return Objects.hash(getAutomaton(), getAlphabet(), endNodes);
     }
 }
