@@ -1,8 +1,7 @@
-package interfaces;
-
+package cli.commands;
 import anotherpackage.Automaton;
 import anotherpackage.AutomatonList;
-
+import AutomatonParts.Node;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -62,7 +61,6 @@ public class FileOpener {
             content = sb.toString();
 
             System.out.println("Successfully opened " + filename);
-            //SAMO PROBNO!!!!!!!!!!!!!!!!!!!!!!!!!
             for (Map.Entry<Integer, Automaton> entrySet : AutomatonList.getInstance().getAutomatons().entrySet()) {
                 System.out.println(entrySet.getKey() + ". ");
                 System.out.println(entrySet.getValue());
@@ -73,4 +71,16 @@ public class FileOpener {
             return false;
         }
     }
+    public boolean closeFile() {
+        try {
+            content = "";
+            filename = "";
+            System.out.println("Successfully closed the current document.");
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error closing file: " + e.getMessage());
+            return false;
+        }
+    }
+
 }

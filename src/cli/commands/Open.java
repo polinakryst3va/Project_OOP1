@@ -1,8 +1,8 @@
 package cli.commands;
 
 import cli.DefaultCommand;
-import interfaces.FileOpener;
 
+import java.io.File;
 import java.util.List;
 
 public class Open extends DefaultCommand {
@@ -13,7 +13,8 @@ public class Open extends DefaultCommand {
     @Override
     public void execute(List<String> arguments) {
         String filename = arguments.isEmpty() ? "" : arguments.get(0);
-        FileOpener fileOpener = new FileOpener(filename);
-        fileOpener.openFile();
+        File fileToOpen = new File(filename);
+        AutomatonManager manager = AutomatonManager.getInstance();
+        manager.open(fileToOpen);
     }
 }

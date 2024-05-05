@@ -1,6 +1,6 @@
 import anotherpackage.Automaton;
 import cli.CLI;
-import interfaces.Node;
+import AutomatonParts.Node;
 
 public class Application {
     public static void main(String[] args) {
@@ -16,11 +16,9 @@ public class Application {
         automaton.addNode(c);
         automaton.addNode(d);
         automaton.addEdge(s, a, "b");
-//        automaton.addEdge(s, b, "a");
+//      automaton.addEdge(s, b, "a");
         automaton.addEdge(a, b, "c");
         automaton.addEdge(d, a, "ab");
-        automaton.addEndNode(b);
-        automaton.addEndNode(c);
         System.out.println(automaton);
         System.out.println(automaton.generateWord());
 

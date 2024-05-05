@@ -1,7 +1,7 @@
 package anotherpackage;
 
-import interfaces.Edge;
-import interfaces.Node;
+import AutomatonParts.Edge;
+import AutomatonParts.Node;
 
 import java.util.*;
 
@@ -9,6 +9,10 @@ public class Automaton {
     private Map<Node, List<Edge>> automaton = new HashMap<>();
     private String alphabet;
     private List<Node> endNodes = new ArrayList<>();
+
+    public List<Node> getEndNodes() {
+        return endNodes;
+    }
 
     public Automaton(String alphabet) {
         this.alphabet = alphabet;
@@ -42,6 +46,9 @@ public class Automaton {
                         visited.add(edge.getEndNode());
                         queue.add(edge.getEndNode());
                         result.append(edge.getTransition());
+                        if (isEndNode(edge.getEndNode())) {
+                            return result.toString();
+                        }
                     }
                 }
             }
@@ -66,7 +73,7 @@ public class Automaton {
 
     public void addEdge(Node from, Node to, String transition) {
         if (Objects.isNull(transition) || transition.isBlank() || transition.isEmpty()) {
-            //invalidTransitionException
+            throw new IllegalArgumentException("Invalid transition: " + transition);
         }
 
         if (!automaton.containsKey(from)) {
@@ -78,7 +85,7 @@ public class Automaton {
         }
 
         if (!alphabet.contains(transition)) {
-            //invalidTransitionException
+            throw new IllegalArgumentException("Invalid transition: " + transition);
         }
 
         automaton.get(from).add(new Edge(transition, to));

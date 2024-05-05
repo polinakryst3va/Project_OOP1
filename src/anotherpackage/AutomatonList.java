@@ -1,6 +1,6 @@
 package anotherpackage;
 
-import interfaces.Node;
+import AutomatonParts.Node;
 
 import java.util.ArrayList;
 import java.util.HashMap;

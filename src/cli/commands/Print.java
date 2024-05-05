@@ -2,18 +2,18 @@ package cli.commands;
 import anotherpackage.Automaton;
 import anotherpackage.AutomatonList;
 import cli.DefaultCommand;
+
 import java.util.List;
 
-public class Recognize extends DefaultCommand {
+public class Print extends DefaultCommand {
 
-    public Recognize() {
+    public Print() {
     }
-
 
     @Override
     public void execute(List<String> arguments) {
-        if (arguments.size() != 2) {
-            System.out.println("Usage: recognize <id> <word>");
+        if (arguments.size() != 1) {
+            System.out.println("Usage: print <id>");
             return;
         }
 
@@ -25,8 +25,6 @@ public class Recognize extends DefaultCommand {
             return;
         }
 
-        String word = arguments.get(1);
-
         Automaton automaton = getAutomatonById(id);
 
         if (automaton == null) {
@@ -34,23 +32,12 @@ public class Recognize extends DefaultCommand {
             return;
         }
 
-        boolean result = containsWord(word, automaton);
-
-        if (result) {
-            System.out.println("The word '" + word + "' is in the alphabet of the automaton.");
-        } else {
-            System.out.println("The word '" + word + "' is not in the alphabet of the automaton.");
-        }
-    }
-
-    private boolean containsWord(String word, Automaton automaton) {
-        String generatedWord = automaton.generateWord();
-        return generatedWord.contains(word);
+        System.out.println(automaton.toString());
     }
 
     private Automaton getAutomatonById(int id) {
         AutomatonList automatonList = AutomatonList.getInstance();
         return automatonList.getAutomatons().get(id);
     }
-}
 
+}

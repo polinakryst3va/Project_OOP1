@@ -13,6 +13,9 @@ public class CLI {
         commands.put(Operations.HELP, new Help());
         commands.put(Operations.RECOGNIZE, new Recognize());
         commands.put(Operations.LIST, new ListCommand());
+        commands.put(Operations.PRINT, new Print());
+        commands.put(Operations.SAVE, new Save());
+        commands.put(Operations.CLOSE, new Close());
     }
 
     public static void start() {

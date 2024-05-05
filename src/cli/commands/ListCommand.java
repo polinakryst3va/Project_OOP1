@@ -1,8 +1,6 @@
 package cli.commands;
-
 import anotherpackage.AutomatonList;
 import cli.DefaultCommand;
-
 import java.util.List;
 
 public class ListCommand extends DefaultCommand {
@@ -11,6 +9,11 @@ public class ListCommand extends DefaultCommand {
 
     @Override
     public void execute(List<String> arguments) {
+        AutomatonManager manager = AutomatonManager.getInstance();
+        if (manager.getOpenedFile() == null) {
+            System.err.println("Error: No file is currently open.");
+            return;
+        }
         AutomatonList automatonList = AutomatonList.getInstance();
         List<Integer> allAutomatonIds = automatonList.getAllAutomatonIds();
 
@@ -24,6 +27,7 @@ public class ListCommand extends DefaultCommand {
                     System.out.print(", ");
                 }
             }
-        } System.out.print("\n");
+        }
+        System.out.print("\n");
     }
 }
