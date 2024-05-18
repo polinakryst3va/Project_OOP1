@@ -1,8 +1,6 @@
 package main.java.cli.commands;
-
 import main.java.cli.DefaultCommand;
 import main.java.cli.Operations;
-
 import java.util.List;
 
 public class Help extends DefaultCommand {

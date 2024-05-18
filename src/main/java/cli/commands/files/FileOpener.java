@@ -1,7 +1,9 @@
-package main.java.cli.commands;
+package main.java.cli.commands.files;
 import main.java.anotherpackage.Automaton;
 import main.java.anotherpackage.AutomatonList;
 import main.java.AutomatonParts.Node;
+import main.java.cli.commands.files.AutomatonManager;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -39,13 +41,14 @@ public class FileOpener {
             int id = 0;
             Node from = null, to = null;
             String transition = "";
-            Automaton automaton = new Automaton("abcd");
+            Automaton automaton = new Automaton("abcdefghijklmnopqrstuvwxyz0123456789" +
+                    "}");
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append("\n");
 
                 if (line.equals("-")) {
                     AutomatonList.getInstance().addAutomaton(id, automaton);
-                    automaton = new Automaton("abcd");
+                    automaton = new Automaton("abcdefghijklmnopqrstuvwxyz0123456789");
                     continue;
                 }
 
@@ -71,11 +74,6 @@ public class FileOpener {
             content = sb.toString();
 
             System.out.println("Successfully opened " + filePath);
-            //SAMO PROBNO!!!!!!!!!!!!!!!!!!!!!!!!!
-            for (Map.Entry<Integer, Automaton> entrySet : AutomatonList.getInstance().getAutomatons().entrySet()) {
-                System.out.println(entrySet.getKey() + ". ");
-                System.out.println(entrySet.getValue());
-            }
             return true;
         } catch (IOException e) {
             System.err.println("Error opening file: " + e.getMessage());

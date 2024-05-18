@@ -16,7 +16,10 @@ public enum Operations {
     UNION("union", "Finds the union of two automatons and creates a new automaton. Prints the ID of the new automaton."),
     CONCAT("concat", "Finds the concatenation of two automatons and creates a new automaton. Prints the ID of the new automaton."),
     UN("un", "Finds the positive envelope of an automaton and creates a new automaton. Prints the ID of the new automaton."),
-    REG("reg", "Creates a new automaton based on a specified regular expression (Cliny's theorem). Prints the ID of the new automaton.");
+    REG("reg", "Creates a new automaton based on a specified regular expression (Cliny's theorem). Prints the ID of the new automaton."),
+    MUTATOR("determinize", "Determines a given automaton"),
+    FINITE("finite","Check whether the language of a given automaton is finite");
+
 
     private String command;
     private String description;

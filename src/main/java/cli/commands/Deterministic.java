@@ -9,6 +9,10 @@ import java.util.*;
 
 
 public class Deterministic extends DefaultCommand {
+
+    public Deterministic() {
+    }
+
     @Override
     public void execute(List<String> arguments) {
         if (arguments.size() != 1) {

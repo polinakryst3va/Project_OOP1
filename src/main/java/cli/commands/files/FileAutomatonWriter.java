@@ -1,11 +1,8 @@
-package main.java.cli.commands;
-
-
+package main.java.cli.commands.files;
 import main.java.AutomatonParts.Edge;
 import main.java.AutomatonParts.Node;
 import main.java.anotherpackage.Automaton;
 import main.java.anotherpackage.AutomatonList;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;

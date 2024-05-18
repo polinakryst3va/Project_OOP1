@@ -1,6 +1,8 @@
 package main.java.cli.commands;
 import main.java.anotherpackage.AutomatonList;
 import main.java.cli.DefaultCommand;
+import main.java.cli.commands.files.AutomatonManager;
+
 import java.util.List;
 
 public class ListCommand extends DefaultCommand {

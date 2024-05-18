@@ -1,6 +1,6 @@
-package main.java.cli.commands;
-import main.java.anotherpackage.Automaton;
+package main.java.cli.commands.files;
 import main.java.anotherpackage.AutomatonList;
+import main.java.exeptions.NoFileOpenException;
 
 import java.io.*;
 import java.util.HashMap;
@@ -46,13 +46,17 @@ public class AutomatonManager {
     }
 
 
-    public void close() {
-        if (openedFile != null) {
-            System.out.println("Successfully closed " + openedFile.getName());
-            this.openedFile = null;
-            AutomatonList.getInstance().setAutomatons(new HashMap<>());
-        } else {
-            System.err.println("Error: No file is currently open.");
+    public void close() throws NoFileOpenException {
+        try {
+            if (openedFile != null) {
+                System.out.println("Successfully closed " + openedFile.getName());
+                this.openedFile = null;
+                AutomatonList.getInstance().setAutomatons(new HashMap<>());
+            } else {
+                throw new NoFileOpenException("Error: No file is currently open.");
+            }
+        } catch (NoFileOpenException e) {
+            System.err.println(e.getMessage());
         }
     }
 

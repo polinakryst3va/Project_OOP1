@@ -75,8 +75,12 @@ public class Automaton {
     }
 
     public void addEdge(Node from, Node to, String transition) {
-        if (Objects.isNull(transition) || transition.isBlank() || transition.isEmpty()) {
-            throw new IllegalArgumentException("Invalid transition: " + transition);
+        if (transition == null) {
+            // Разрешаваме празни преходи
+            transition = "";
+        } else if (transition.isEmpty()) {
+            // Използваме празния символ за преход
+            transition = "";
         }
 
         if (!automaton.containsKey(from)) {
@@ -87,10 +91,7 @@ public class Automaton {
             automaton.put(to, new ArrayList<>());
         }
 
-        if (!alphabet.contains(transition)) {
-            throw new IllegalArgumentException("Invalid transition: " + transition);
-        }
-
+        // Валидацията е премахната, понеже празните преходи са позволени
         automaton.get(from).add(new Edge(transition, to));
     }
 

@@ -41,10 +41,9 @@ A=aC
 B=bC
 -
 id=8
-A=bC
-B=cA
-S=aB
+A=bB
+B=cC
+S=aA
 C=
-D=
 -
 

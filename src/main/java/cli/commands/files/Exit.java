@@ -1,4 +1,4 @@
-package main.java.cli.commands;
+package main.java.cli.commands.files;
 import main.java.cli.DefaultCommand;
 
 import java.util.List;
