@@ -1,8 +1,6 @@
-package main.java.anotherpackage;
-
-import main.java.AutomatonParts.Edge;
-import main.java.AutomatonParts.Node;
-
+package main.java.realization;
+import main.java.realization.AutomatonParts.Edge;
+import main.java.realization.AutomatonParts.Node;
 import java.util.*;
 
 public class Automaton {
@@ -76,10 +74,10 @@ public class Automaton {
 
     public void addEdge(Node from, Node to, String transition) {
         if (transition == null) {
-            // Разрешаваме празни преходи
+
             transition = "";
         } else if (transition.isEmpty()) {
-            // Използваме празния символ за преход
+
             transition = "";
         }
 
@@ -91,7 +89,6 @@ public class Automaton {
             automaton.put(to, new ArrayList<>());
         }
 
-        // Валидацията е премахната, понеже празните преходи са позволени
         automaton.get(from).add(new Edge(transition, to));
     }
 

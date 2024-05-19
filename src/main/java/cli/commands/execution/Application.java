@@ -1,6 +1,5 @@
-package main.java;
+package main.java.cli.commands.execution;
 
-import main.java.cli.CLI;
 
 public class Application {
     public static void main(String[] args) {

@@ -1,7 +1,6 @@
 package main.java.cli.commands.files;
-import main.java.anotherpackage.AutomatonList;
-import main.java.exeptions.NoFileOpenException;
-
+import main.java.realization.AutomatonList;
+import main.java.exeptions.files.NoOpenFileException;
 import java.io.*;
 import java.util.HashMap;
 
@@ -27,12 +26,13 @@ public class AutomatonManager {
         this.openedFile = openedFile;
     }
 
-
-
     public void save() {
+        if (openedFile == null) {
+            System.err.println("Error: No file is currently open.");
+            return;
+        }
         FileAutomatonWriter writer = new FileAutomatonWriter(openedFile.getPath(), FileOpener.getContent());
         writer.write();
-
     }
 
     public void save(int id, String file) {
@@ -45,19 +45,13 @@ public class AutomatonManager {
         writer.write();
     }
 
-
-    public void close() throws NoFileOpenException {
-        try {
-            if (openedFile != null) {
-                System.out.println("Successfully closed " + openedFile.getName());
-                this.openedFile = null;
-                AutomatonList.getInstance().setAutomatons(new HashMap<>());
-            } else {
-                throw new NoFileOpenException("Error: No file is currently open.");
-            }
-        } catch (NoFileOpenException e) {
-            System.err.println(e.getMessage());
+    public void close() throws NoOpenFileException {
+        if (openedFile != null) {
+            System.out.println("Successfully closed " + openedFile.getName());
+            this.openedFile = null;
+            AutomatonList.getInstance().setAutomatons(new HashMap<>());
+        } else {
+            throw new NoOpenFileException("Error: No file is currently open.");
         }
     }
-
 }

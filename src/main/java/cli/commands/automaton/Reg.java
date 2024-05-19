@@ -1,40 +1,60 @@
-package main.java.cli.commands;
-
-import main.java.AutomatonParts.Edge;
-import main.java.AutomatonParts.Node;
-import main.java.anotherpackage.Automaton;
-import main.java.anotherpackage.AutomatonList;
-import main.java.cli.DefaultCommand;
-
+package main.java.cli.commands.automaton;
+import main.java.realization.AutomatonParts.Node;
+import main.java.realization.Automaton;
+import main.java.realization.AutomatonList;
+import main.java.cli.commands.execution.DefaultCommand;
+import main.java.cli.commands.files.AutomatonManager;
+import main.java.exeptions.files.NoOpenFileException;
 import java.util.*;
 
 
 public class Reg extends DefaultCommand {
 
     private final AutomatonList automatonList = AutomatonList.getInstance();
+    private final String ALPHABET = "abcdefghijklmnopqrstuvwxyz123456789";
 
     @Override
     public void execute(List<String> arguments) {
-        if (arguments.size() != 1) {
-            System.out.println("Error: Invalid number of arguments. Usage: reg <regex>");
-            return;
+        try {
+            if (AutomatonManager.getInstance().getOpenedFile() == null) {
+                throw new NoOpenFileException("Error: No file is currently open.");
+            }
+
+            if (arguments.size() != 1) {
+                throw new IllegalArgumentException("Error: Invalid number of arguments. Usage: reg <regex>");
+            }
+
+            String regex = arguments.get(0);
+
+            if (!isValidRegex(regex)) {
+                throw new IllegalArgumentException("Error: Invalid regular expression format. Only characters from the alphabet are allowed.");
+            }
+
+            Automaton regAutomaton = createAutomatonFromRegex(regex);
+            if (regAutomaton == null) {
+                System.out.println("Error: Failed to create automaton from regex.");
+                return;
+            }
+
+            int newAutomatonId = automatonList.addAutomaton(regAutomaton);
+
+            System.out.println("New automaton with ID: " + newAutomatonId + " is created!");
+        } catch (NoOpenFileException | IllegalArgumentException e) {
+            System.err.println(e.getMessage());
         }
-
-        String regex = arguments.get(0);
-        Automaton regAutomaton = createAutomatonFromRegex(regex);
-        if (regAutomaton == null) {
-            System.out.println("Error: Failed to create automaton from regex.");
-            return;
-        }
-
-        int newAutomatonId = automatonList.addAutomaton(regAutomaton);
-
-        System.out.println("New automaton with ID: " + newAutomatonId + " is created!");
     }
 
+    private boolean isValidRegex(String regex) {
+        for (char c : regex.toCharArray()) {
+            if (ALPHABET.indexOf(c) == -1) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     private Automaton createAutomatonFromRegex(String regex) {
-        Automaton automaton = new Automaton("abcdefghijklmnopqrstuvwxyz0123456789");
+        Automaton automaton = new Automaton(ALPHABET);
 
         int m = regex.length();
         Stack<Node> stack = new Stack<>();

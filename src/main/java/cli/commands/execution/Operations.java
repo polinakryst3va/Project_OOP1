@@ -1,4 +1,4 @@
-package main.java.cli;
+package main.java.cli.commands.execution;
 
 public enum Operations {
     OPEN("open", "Opens a file and reads its contents."),

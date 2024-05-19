@@ -1,4 +1,4 @@
-package main.java.cli;
+package main.java.cli.commands.execution;
 
 public abstract class DefaultCommand implements Command {
 

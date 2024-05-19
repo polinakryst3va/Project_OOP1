@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: main.java.Application
+Main-Class: main.java.cli.commands.execution.Application
 

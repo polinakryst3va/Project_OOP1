@@ -1,7 +1,6 @@
-package main.java.cli;
-
-import main.java.anotherpackage.Mutator;
-import main.java.cli.commands.*;
+package main.java.cli.commands.execution;
+import main.java.cli.commands.automaton.Mutator;
+import main.java.cli.commands.automaton.*;
 import main.java.cli.commands.files.*;
 
 import java.util.*;
@@ -45,7 +44,7 @@ public class CLI {
                     System.out.println("Error: Unknown command. Type 'help' for a list of available commands.");
                 }
             } catch (IllegalArgumentException e) {
-                System.out.println("Error: Unknown command. Type 'help' for a list of available commands.");
+                System.err.println("Error: Unknown command. Type 'help' for a list of available commands.");
             }
         }
     }

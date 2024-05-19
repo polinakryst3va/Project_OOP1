@@ -1,55 +1,62 @@
-package main.java.anotherpackage;
+package main.java.cli.commands.automaton;
 
-import main.java.AutomatonParts.Edge;
-import main.java.AutomatonParts.Node;
-import main.java.cli.DefaultCommand;
-import main.java.cli.commands.Deterministic;
-
+import main.java.cli.commands.files.AutomatonManager;
+import main.java.exeptions.files.NoOpenFileException;
+import main.java.realization.Automaton;
+import main.java.realization.AutomatonList;
+import main.java.realization.AutomatonParts.Edge;
+import main.java.realization.AutomatonParts.Node;
+import main.java.cli.commands.execution.DefaultCommand;
 import java.util.*;
 
 public class Mutator extends DefaultCommand {
     @Override
     public void execute(List<String> arguments) {
-        if (arguments.size() < 1) {
-            System.out.println("Please provide the ID of the automaton to determinize.");
-            return;
-        }
-
-        int automatonId;
         try {
-            automatonId = Integer.parseInt(arguments.get(0));
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid automaton ID. Please provide a valid integer ID.");
-            return;
+            if (AutomatonManager.getInstance().getOpenedFile() == null) {
+                throw new NoOpenFileException("Error: No file is currently open.");
+            }
+
+            if (arguments.size() < 1) {
+                throw new IllegalArgumentException("Please provide the ID of the automaton to determinize.");
+            }
+
+            int automatonId;
+            try {
+                automatonId = Integer.parseInt(arguments.get(0));
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid automaton ID. Please provide a valid integer ID.");
+            }
+
+            AutomatonList automatonList = AutomatonList.getInstance();
+            Automaton nfa = automatonList.getAutomaton(automatonId);
+
+            if (nfa == null) {
+                throw new IllegalArgumentException("Automaton with ID " + automatonId + " does not exist.");
+            }
+
+
+            Deterministic deterministicCommand = new Deterministic();
+            boolean isDeterministic = deterministicCommand.isAutomatonDeterministic(nfa);
+
+            if (isDeterministic) {
+                System.out.println("Automaton with ID " + automatonId + " is already deterministic.");
+                return;
+            }
+
+            Automaton dfa = determinize(nfa);
+            if (dfa == null) {
+                System.out.println("Failed to determinize automaton with ID " + automatonId + ".");
+                return;
+            }
+
+            int newAutomatonId = automatonList.addAutomaton(dfa);
+
+            System.out.println("Automaton " + automatonId + " has been determinized.");
+            System.out.println("New DFA has been added with ID: " + newAutomatonId);
+        } catch (NoOpenFileException | IllegalArgumentException e) {
+            System.err.println(e.getMessage());
         }
-
-        AutomatonList automatonList = AutomatonList.getInstance();
-        Automaton nfa = automatonList.getAutomaton(automatonId);
-
-        if (nfa == null) {
-            System.out.println("Automaton with ID " + automatonId + " does not exist.");
-            return;
-        }
-
-        // Използване на Deterministic командата за проверка на детерминистичността
-        Deterministic deterministicCommand = new Deterministic();
-        boolean isDeterministic = deterministicCommand.isAutomatonDeterministic(nfa);
-
-        if (isDeterministic) {
-            System.out.println("Automaton with ID " + automatonId + " is already deterministic.");
-            return;
-        }
-
-        Automaton dfa = determinize(nfa);
-        if (dfa == null) {
-            System.out.println("Failed to determinize automaton with ID " + automatonId + ".");
-            return;
-        }
-
-        int newAutomatonId = automatonList.addAutomaton(dfa);
-
-        System.out.println("Automaton " + automatonId + " has been determinized.");
-        System.out.println("New DFA has been added with ID: " + newAutomatonId);
     }
 
     private Automaton determinize(Automaton nfa) {
@@ -59,7 +66,6 @@ public class Mutator extends DefaultCommand {
         Map<Set<Node>, Node> dfaStates = new HashMap<>();
         Queue<Set<Node>> queue = new LinkedList<>();
 
-        // Началното състояние на DFA
         Set<Node> startState = new HashSet<>();
         startState.add(new Node("S"));
         queue.add(startState);

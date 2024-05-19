@@ -1,7 +1,6 @@
 package main.java.cli.commands.files;
-import main.java.cli.DefaultCommand;
-import main.java.exeptions.InvalidArguments;
-
+import main.java.cli.commands.execution.DefaultCommand;
+import main.java.exeptions.comands.InvalidArguments;
 import java.util.List;
 
 public class SaveAs extends DefaultCommand {
@@ -20,4 +19,3 @@ public class SaveAs extends DefaultCommand {
         }
     }
 }
-

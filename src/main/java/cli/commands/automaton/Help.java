@@ -1,6 +1,6 @@
-package main.java.cli.commands;
-import main.java.cli.DefaultCommand;
-import main.java.cli.Operations;
+package main.java.cli.commands.automaton;
+import main.java.cli.commands.execution.DefaultCommand;
+import main.java.cli.commands.execution.Operations;
 import java.util.List;
 
 public class Help extends DefaultCommand {

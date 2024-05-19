@@ -1,5 +1,4 @@
-package main.java.AutomatonParts;
-
+package main.java.realization.AutomatonParts;
 import java.util.Objects;
 
 public class Edge {

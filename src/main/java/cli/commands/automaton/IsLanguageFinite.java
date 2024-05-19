@@ -1,9 +1,12 @@
-package main.java.cli.commands;
-import main.java.AutomatonParts.Edge;
-import main.java.AutomatonParts.Node;
-import main.java.anotherpackage.Automaton;
-import main.java.anotherpackage.AutomatonList;
-import main.java.cli.DefaultCommand;
+package main.java.cli.commands.automaton;
+import main.java.realization.AutomatonParts.Edge;
+import main.java.realization.AutomatonParts.Node;
+import main.java.realization.Automaton;
+import main.java.realization.AutomatonList;
+import main.java.cli.commands.execution.DefaultCommand;
+import main.java.cli.commands.files.AutomatonManager;
+import main.java.exeptions.comands.AutomatonNotFoundException;
+import main.java.exeptions.files.NoOpenFileException;
 import java.util.*;
 
 public class IsLanguageFinite extends DefaultCommand {
@@ -15,32 +18,37 @@ public class IsLanguageFinite extends DefaultCommand {
 
     @Override
     public void execute(List<String> arguments) {
-        if (arguments.size() != 1) {
-            System.out.println("Error: Invalid number of arguments. Usage: finite <id>");
-            return;
-        }
-
-        int id;
         try {
-            id = Integer.parseInt(arguments.get(0));
-        } catch (NumberFormatException e) {
-            System.out.println("Error: Invalid argument. ID must be an integer.");
-            return;
-        }
+            if (AutomatonManager.getInstance().getOpenedFile() == null) {
+                throw new NoOpenFileException("Error: No file is currently open.");
+            }
 
-        if (!automatonList.getAutomatons().containsKey(id)) {
-            System.out.println("Error: Automaton with ID " + id + " not found.");
-            return;
-        }
+            if (arguments.size() != 1) {
+                throw new IllegalArgumentException("Error: Invalid number of arguments. Usage: finite <id>");
+            }
 
-        Automaton automaton = automatonList.getAutomaton(id);
+            int id;
+            try {
+                id = Integer.parseInt(arguments.get(0));
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Error: Invalid automaton ID. Please provide a valid integer ID.");
+            }
 
-        boolean isFinite = isLanguageFinite(automaton);
+            Automaton automaton = automatonList.getAutomaton(id);
 
-        if (isFinite) {
-            System.out.println("The language of automaton with ID " + id + " is finite.");
-        } else {
-            System.out.println("The language of automaton with ID " + id + " is infinite.");
+            if (automaton == null) {
+                throw new AutomatonNotFoundException("Error: Automaton with ID " + id + " not found.");
+            }
+
+            boolean isFinite = isLanguageFinite(automaton);
+
+            if (isFinite) {
+                System.out.println("The language of automaton with ID " + id + " is finite.");
+            } else {
+                System.out.println("The language of automaton with ID " + id + " is infinite.");
+            }
+        } catch (NoOpenFileException | IllegalArgumentException | AutomatonNotFoundException e) {
+            System.err.println(e.getMessage());
         }
     }
 

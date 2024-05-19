@@ -1,7 +1,6 @@
 package main.java.cli.commands.files;
-import main.java.cli.DefaultCommand;
-import main.java.cli.commands.files.AutomatonManager;
-
+import main.java.cli.commands.execution.DefaultCommand;
+import main.java.exeptions.files.NoOpenFileException;
 import java.util.List;
 
 public class Close extends DefaultCommand {
@@ -11,6 +10,10 @@ public class Close extends DefaultCommand {
 
     @Override
     public void execute(List<String> arguments) {
-        AutomatonManager.getInstance().close();
+        try {
+            AutomatonManager.getInstance().close();
+        } catch (NoOpenFileException e) {
+            System.err.println(e.getMessage());
+        }
     }
 }

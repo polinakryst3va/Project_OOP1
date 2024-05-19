@@ -1,9 +1,11 @@
-package main.java.cli.commands;
-import main.java.AutomatonParts.Edge;
-import main.java.AutomatonParts.Node;
-import main.java.anotherpackage.Automaton;
-import main.java.anotherpackage.AutomatonList;
-import main.java.cli.DefaultCommand;
+package main.java.cli.commands.automaton;
+import main.java.realization.AutomatonParts.Edge;
+import main.java.realization.AutomatonParts.Node;
+import main.java.realization.Automaton;
+import main.java.realization.AutomatonList;
+import main.java.cli.commands.execution.DefaultCommand;
+import main.java.cli.commands.files.AutomatonManager;
+import main.java.exeptions.files.NoOpenFileException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,30 +18,35 @@ public class Un extends DefaultCommand {
 
     @Override
     public void execute(List<String> arguments) {
-        if (arguments.size() != 1) {
-            System.out.println("Error: Invalid number of arguments. Usage: un <id>");
-            return;
-        }
-
-        int id;
         try {
-            id = Integer.parseInt(arguments.get(0));
-        } catch (NumberFormatException e) {
-            System.out.println("Error: Invalid argument. ID must be an integer.");
-            return;
+            if (AutomatonManager.getInstance().getOpenedFile() == null) {
+                throw new NoOpenFileException("Error: No file is currently open.");
+            }
+
+            if (arguments.size() != 1) {
+                throw new IllegalArgumentException("Error: Invalid number of arguments. Usage: un <id>");
+            }
+
+            int id;
+            try {
+                id = Integer.parseInt(arguments.get(0));
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Error: Invalid argument. ID must be an integer.");
+            }
+
+            if (!automatonList.getAutomatons().containsKey(id)) {
+                throw new IllegalArgumentException("Error: Automaton with ID " + id + " not found.");
+            }
+
+            Automaton automaton = automatonList.getAutomaton(id);
+            Automaton unAutomaton = findUnreachableStates(automaton);
+
+            int newAutomatonId = automatonList.addAutomaton(unAutomaton);
+
+            System.out.println("New automaton with ID: " + newAutomatonId + " is created!");
+        } catch (NoOpenFileException | IllegalArgumentException e) {
+            System.err.println(e.getMessage());
         }
-
-        if (!automatonList.getAutomatons().containsKey(id)) {
-            System.out.println("Error: Automaton with ID " + id + " not found.");
-            return;
-        }
-
-        Automaton automaton = automatonList.getAutomaton(id);
-        Automaton unAutomaton = findUnreachableStates(automaton);
-
-        int newAutomatonId = automatonList.addAutomaton(unAutomaton);
-
-        System.out.println("New automaton with ID: " + newAutomatonId + " is created!");
     }
 
     private Automaton findUnreachableStates(Automaton automaton) {
