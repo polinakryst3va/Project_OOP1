@@ -1,5 +1,5 @@
 package main.java.cli.commands.automaton;
-import main.java.realization.AutomatonList;
+import main.java.realization.models.AutomatonList;
 import main.java.cli.commands.execution.DefaultCommand;
 import main.java.cli.commands.files.AutomatonManager;
 import main.java.exeptions.comands.AutomatonNotFoundException;

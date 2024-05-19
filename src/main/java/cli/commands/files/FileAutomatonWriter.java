@@ -1,8 +1,9 @@
 package main.java.cli.commands.files;
+import main.java.exeptions.files.WritingToFIleException;
 import main.java.realization.AutomatonParts.Edge;
 import main.java.realization.AutomatonParts.Node;
-import main.java.realization.Automaton;
-import main.java.realization.AutomatonList;
+import main.java.realization.models.Automaton;
+import main.java.realization.models.AutomatonList;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class FileAutomatonWriter {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath)))) {
             writer.println(contentInfo.toString());
             System.out.println("Successfully saved to " + filePath);
-        } catch (IOException ex) {
+        } catch (WritingToFIleException | IOException ex) {
             System.err.println("Error writing to file: " + ex.getMessage());
         }
     }
@@ -75,8 +76,7 @@ public class FileAutomatonWriter {
         this.content = contentInfo.toString();
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath, true)))) {
             writer.println(contentInfo.toString());
-            System.out.println("Successfully appended to " + filePath);
-        } catch (IOException ex) {
+        } catch (WritingToFIleException | IOException ex) {
             System.err.println("Error appending to file: " + ex.getMessage());
         }
     }

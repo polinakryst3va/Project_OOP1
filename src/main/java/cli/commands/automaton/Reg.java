@@ -1,7 +1,7 @@
 package main.java.cli.commands.automaton;
 import main.java.realization.AutomatonParts.Node;
-import main.java.realization.Automaton;
-import main.java.realization.AutomatonList;
+import main.java.realization.models.Automaton;
+import main.java.realization.models.AutomatonList;
 import main.java.cli.commands.execution.DefaultCommand;
 import main.java.cli.commands.files.AutomatonManager;
 import main.java.exeptions.files.NoOpenFileException;
@@ -46,7 +46,7 @@ public class Reg extends DefaultCommand {
 
     private boolean isValidRegex(String regex) {
         for (char c : regex.toCharArray()) {
-            if (ALPHABET.indexOf(c) == -1) {
+            if (ALPHABET.indexOf(c) == -1 && c != '+' && c != '*') {
                 return false;
             }
         }
@@ -67,42 +67,39 @@ public class Reg extends DefaultCommand {
 
         List<Node> endNodes = new ArrayList<>();
 
-        for (int i = 0; i < m; i++) {
-            char c = regex.charAt(i);
-            if (c == '(') {
-                Node newNode = new Node(Character.toString(capitals.charAt(idIndex)));
-                idIndex++;
-                automaton.addNode(newNode);
-                stack.push(newNode);
-            } else if (c == '+') {
-                stack.pop();
-            } else if (c == ')') {
-                stack.pop();
-            }else if (c == '*') {
-                if (!stack.isEmpty()) {
-                    Node prevNode = stack.pop();
+        try {
+            for (int i = 0; i < m; i++) {
+                char c = regex.charAt(i);
+                if (c == '+') {
+                    stack.pop();
+                } else if (c == '*') {
                     if (!stack.isEmpty()) {
-                        Node previousNode = stack.peek();
-                        automaton.addEdge(previousNode, prevNode, "e");
+                        Node prevNode = stack.pop();
+                        if (!stack.isEmpty()) {
+                            Node previousNode = stack.peek();
+                            automaton.addEdge(previousNode, prevNode, "*"); //*=Ɛ
+                        }
+                        automaton.addEdge(prevNode, prevNode, "*");
+                        stack.push(prevNode);
+                    } else {
+                        throw new IllegalArgumentException("Error: Invalid regular expression.");
                     }
-                    automaton.addEdge(prevNode, prevNode, "e");
-                    stack.push(prevNode);
                 } else {
-                    System.out.println("Error: Invalid regular expression.");
-                    return null;
+                    Node newNode = new Node(Character.toString(capitals.charAt(idIndex)));
+                    idIndex++;
+                    automaton.addNode(newNode);
+                    automaton.addEdge(stack.peek(), newNode, Character.toString(c));
+                    stack.push(newNode);
                 }
-            }else {
-                Node newNode = new Node(Character.toString(capitals.charAt(idIndex)));
-                idIndex++;
-                automaton.addNode(newNode);
-                automaton.addEdge(stack.peek(), newNode, Character.toString(c));
-                stack.push(newNode);
             }
-        }
 
-        Node lastNode = stack.peek();
-        endNodes.add(lastNode);
-        automaton.addEndNode(lastNode);
+            Node lastNode = stack.peek();
+            endNodes.add(lastNode);
+            automaton.addEndNode(lastNode);
+        } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
 
         return automaton;
     }

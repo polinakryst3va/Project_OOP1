@@ -13,7 +13,7 @@ public class Open extends DefaultCommand {
     }
 
     @Override
-    public void execute(List<String> arguments) throws ErrorOpeningException {
+    public void execute(List<String> arguments) throws ErrorOpeningException, IOException {
         try {
             if (AutomatonManager.getInstance().getOpenedFile() != null) {
                 throw new AlreadyOpenedFileException("A file is already opened!");
@@ -28,7 +28,7 @@ public class Open extends DefaultCommand {
             }
         } catch (AlreadyOpenedFileException | InvalidArguments e) {
             System.err.println(e.getMessage());
-        } catch (IOException e) {
+        } catch (ErrorOpeningException e) {
             System.err.println("An error occurred while opening the file: " + e.getMessage());
         }
     }

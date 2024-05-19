@@ -1,5 +1,5 @@
 package main.java.cli.commands.files;
-import main.java.realization.AutomatonList;
+import main.java.realization.models.AutomatonList;
 import main.java.exeptions.files.NoOpenFileException;
 import java.io.*;
 import java.util.HashMap;

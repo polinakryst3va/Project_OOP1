@@ -2,8 +2,8 @@ package main.java.cli.commands.automaton;
 
 import main.java.cli.commands.files.AutomatonManager;
 import main.java.exeptions.files.NoOpenFileException;
-import main.java.realization.Automaton;
-import main.java.realization.AutomatonList;
+import main.java.realization.models.Automaton;
+import main.java.realization.models.AutomatonList;
 import main.java.realization.AutomatonParts.Edge;
 import main.java.realization.AutomatonParts.Node;
 import main.java.cli.commands.execution.DefaultCommand;
@@ -53,7 +53,7 @@ public class Mutator extends DefaultCommand {
             int newAutomatonId = automatonList.addAutomaton(dfa);
 
             System.out.println("Automaton " + automatonId + " has been determinized.");
-            System.out.println("New DFA has been added with ID: " + newAutomatonId);
+            System.out.println("New Automaton has been added with ID: " + newAutomatonId);
         } catch (NoOpenFileException | IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }

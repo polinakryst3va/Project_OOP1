@@ -1,6 +1,6 @@
 package main.java.cli.commands.files;
-import main.java.realization.Automaton;
-import main.java.realization.AutomatonList;
+import main.java.realization.models.Automaton;
+import main.java.realization.models.AutomatonList;
 import main.java.realization.AutomatonParts.Node;
 import main.java.exeptions.files.CreatingFileException;
 import java.io.BufferedReader;
@@ -76,6 +76,4 @@ public class FileOpener {
             throw new CreatingFileException("Failed to create new file: " + filePath);
         }
     }
-
-
 }

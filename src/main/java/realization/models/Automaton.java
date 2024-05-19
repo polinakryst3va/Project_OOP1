@@ -1,4 +1,4 @@
-package main.java.realization;
+package main.java.realization.models;
 import main.java.realization.AutomatonParts.Edge;
 import main.java.realization.AutomatonParts.Node;
 import java.util.*;

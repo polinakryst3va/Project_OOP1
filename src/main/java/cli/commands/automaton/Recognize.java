@@ -1,6 +1,6 @@
 package main.java.cli.commands.automaton;
-import main.java.realization.Automaton;
-import main.java.realization.AutomatonList;
+import main.java.realization.models.Automaton;
+import main.java.realization.models.AutomatonList;
 import main.java.cli.commands.execution.DefaultCommand;
 import main.java.cli.commands.files.AutomatonManager;
 import main.java.exeptions.files.NoOpenFileException;
@@ -35,9 +35,9 @@ public class Recognize extends DefaultCommand {
             boolean result = containsWord(word, automaton);
 
             if (result) {
-                System.out.println("The word '" + word + "' is in the alphabet of the automaton.");
+                System.out.println("The word '" + word + "' is in the language of the automaton.");
             } else {
-                System.out.println("The word '" + word + "' is not in the alphabet of the automaton.");
+                System.out.println("The word '" + word + "' is not in the language of the automaton.");
             }
         } catch (NoOpenFileException | IllegalArgumentException e) {
             System.err.println(e.getMessage());

@@ -1,10 +1,9 @@
 package main.java.cli.commands.automaton;
-import main.java.realization.Automaton;
-import main.java.realization.AutomatonList;
+import main.java.realization.models.Automaton;
+import main.java.realization.models.AutomatonList;
 import main.java.cli.commands.execution.DefaultCommand;
 import main.java.cli.commands.files.AutomatonManager;
 import main.java.exeptions.comands.AutomatonNotFoundException;
-import main.java.exeptions.comands.InvalidArguments;
 import main.java.exeptions.files.NoOpenFileException;
 import java.util.List;
 
@@ -24,7 +23,12 @@ public class Print extends DefaultCommand {
                 throw new IllegalArgumentException("Usage: print <id>");
             }
 
-            int id = parseId(arguments.get(0));
+            int id;
+            try {
+                id = Integer.parseInt(arguments.get(0));
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Error: Invalid automaton ID. Please provide a valid integer ID.");
+            }
             Automaton automaton = getAutomatonById(id);
 
             if (automaton == null) {
@@ -37,17 +41,8 @@ public class Print extends DefaultCommand {
         }
     }
 
-    private int parseId(String idString) {
-        try {
-            return Integer.parseInt(idString);
-        } catch (NumberFormatException e) {
-            throw new InvalidArguments("Error: Invalid automaton ID. Please provide a valid integer ID.");
-        }
-    }
-
     private Automaton getAutomatonById(int id) {
         AutomatonList automatonList = AutomatonList.getInstance();
         return automatonList.getAutomatons().get(id);
     }
-
 }

@@ -1,7 +1,8 @@
-package main.java.realization;
+package main.java.realization.models;
 import main.java.exeptions.comands.AutomatonNotFoundException;
 import main.java.exeptions.comands.InvalidAutomatonException;
 import main.java.realization.AutomatonParts.Node;
+
 import java.util.*;
 
 public class AutomatonList {

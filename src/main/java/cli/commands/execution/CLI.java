@@ -3,6 +3,7 @@ import main.java.cli.commands.automaton.Mutator;
 import main.java.cli.commands.automaton.*;
 import main.java.cli.commands.files.*;
 
+import java.io.IOException;
 import java.util.*;
 
 public class CLI {
@@ -43,7 +44,7 @@ public class CLI {
                 } else {
                     System.out.println("Error: Unknown command. Type 'help' for a list of available commands.");
                 }
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | IOException e) {
                 System.err.println("Error: Unknown command. Type 'help' for a list of available commands.");
             }
         }

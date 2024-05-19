@@ -9,7 +9,7 @@ public enum Operations {
     EXIT("exit", "Exits the application."),
     LIST("list", "Outputs a List of IDs of all automatons read."),
     PRINT("print", "Displays information about all transitions in the automaton."),
-    SAVE_ID_FILENAME("save automaton", "Saves an automaton to a file."),
+    SAVE_AUTOMATON("save automaton", "Saves an automaton to a file."),
     EMPTY("empty", "Checks if the language is empty."),
     DETERMINISTIC("deterministic", "Checks whether an automaton is deterministic."),
     RECOGNIZE("recognize", "Checks if a word is in the language."),
@@ -17,7 +17,7 @@ public enum Operations {
     CONCAT("concat", "Finds the concatenation of two automatons and creates a new automaton. Prints the ID of the new automaton."),
     UN("un", "Finds the positive envelope of an automaton and creates a new automaton. Prints the ID of the new automaton."),
     REG("reg", "Creates a new automaton based on a specified regular expression (Cliny's theorem). Prints the ID of the new automaton."),
-    MUTATOR("determinize", "Determines a given automaton"),
+    MUTATOR("mutator", "Determines a given automaton"),
     FINITE("finite","Check whether the language of a given automaton is finite");
 
 
